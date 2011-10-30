@@ -22,18 +22,15 @@ module OmniAuth
         consumer
       end
 
-      uid { access_token.params[:id] }
+      uid { raw_info['userId'] }
 
       info do
         {
-          :nickname => raw_info['screen_name'],
-          :name => raw_info['name'],
-          :location => raw_info['location'],
-          :image => raw_info['profile_image_url'],
-          :description => raw_info['description'],
+          :nickname => raw_info['nickName'],
+          :name => raw_info['nickName'],
+          :image => raw_info['userPicUrl'],
           :urls => {
-            'Website' => raw_info['url'],
-            'Weibo' => 'http://weibo.com/' + raw_info['id'].to_s
+            'Tudou' => 'http://www.tudou.com/home/' + raw_info['userName']
           }
         }
       end
@@ -62,10 +59,6 @@ module OmniAuth
 
       def raw_info
         @raw_info ||= MultiJson.decode(access_token.get('http://api.tudou.com/auth/verify_credentials.oauth').body)
-        puts
-        puts @raw_info.inspect
-        puts
-        @raw_info
       rescue ::Errno::ETIMEDOUT
         raise ::Timeout::Error
       end
