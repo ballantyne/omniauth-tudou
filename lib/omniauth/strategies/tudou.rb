@@ -62,6 +62,10 @@ module OmniAuth
 
       def raw_info
         @raw_info ||= MultiJson.decode(access_token.get('http://api.tudou.com/auth/verify_credentials.oauth').body)
+        puts
+        puts @raw_info.inspect
+        puts
+        @raw_info
       rescue ::Errno::ETIMEDOUT
         raise ::Timeout::Error
       end
